@@ -1,0 +1,16 @@
+{
+    "name": "Movement",
+    "rootNamespace": "Assets.Scripts.Movement",
+    "references": [
+        "GUID:44bd70a8ba973ec488b5f6db1182069b"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

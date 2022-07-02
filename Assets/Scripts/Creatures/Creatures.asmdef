@@ -1,0 +1,17 @@
+{
+    "name": "Creatures",
+    "rootNamespace": "Assets.Scripts.Creatures",
+    "references": [
+        "GUID:bb50516465f17574782dffd898a79429",
+        "GUID:61d1aea1ecc6715439f442b4454f979f"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

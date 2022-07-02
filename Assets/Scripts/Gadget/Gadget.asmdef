@@ -1,0 +1,14 @@
+{
+    "name": "Gadgets",
+    "rootNamespace": "Assets.Scripts.Gadgets",
+    "references": [],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

@@ -1,0 +1,14 @@
+{
+    "name": "Scriptable",
+    "rootNamespace": "Assets.Scripts.Scriptable",
+    "references": [],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

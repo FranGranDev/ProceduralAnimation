@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Assets.Scripts.Creatures
 {
-    public abstract class Creature : MonoBehaviour, IMove
+    public abstract class Creature : MonoBehaviour, IMovement
     {
         public abstract void Move(Vector3 direction, float rotation);
         public abstract void Jump();
@@ -13,13 +13,11 @@ namespace Assets.Scripts.Creatures
         public abstract void OnActionEnd();
         public abstract void ChangeGadget(bool right);
 
-        public void DoAction()
-        {
-           
-        }
         public MoveState State { get; set; }
         public abstract void StateSelect();
         public abstract void StateExecute();
+
+        public abstract Transform Body { get; }
 
         public abstract void Init();
 

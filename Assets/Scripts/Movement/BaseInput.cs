@@ -6,7 +6,7 @@ namespace Assets.Scripts.Movement
     public abstract class BaseInput : MonoBehaviour
     {
         [SerializeField] protected GameObject _target;
-        public IMove Target { get; private set; }
+        public IMovement Target { get; private set; }
 
         protected abstract void DoInput();
 
@@ -14,7 +14,7 @@ namespace Assets.Scripts.Movement
         {
             try
             {
-                Target = _target.GetComponent<IMove>();
+                Target = _target.GetComponent<IMovement>();
             }
             catch
             {

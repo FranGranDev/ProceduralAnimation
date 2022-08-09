@@ -8,8 +8,8 @@ namespace Assets.Scripts.Creatures
     public class Spider : Creature
     {
         [Range(0, 15f)] [SerializeField] private float Speed;
-        [Range(0, 90f)] [SerializeField] private float RotationSpeed;
-        [Range(0, 90f)] [SerializeField] private float AirRotationSpeed;
+        [Range(0, 360f)] [SerializeField] private float RotationSpeed;
+        [Range(0, 270f)] [SerializeField] private float AirRotationSpeed;
         [Range(0, 100f)] [SerializeField] private float JumpVelocity;
 
         [Range(0, 3f)] [SerializeField] private float MinHeight;
@@ -20,6 +20,7 @@ namespace Assets.Scripts.Creatures
         public float CurrantBodyUpSpeed { get; private set; }
         public Vector3 Direction { get; private set; }
         public float CurrantSpeed { get; private set; }
+        public override Transform Body => Base;
 
         [Header("Components")]
         [SerializeField] private Gadget Weapon;
@@ -29,6 +30,8 @@ namespace Assets.Scripts.Creatures
 
         public override void Move(Vector3 direction, float rotation)
         {
+            direction.y = 0f;
+
             switch(State)
             {
                 case MoveState.OnGround:
@@ -47,7 +50,8 @@ namespace Assets.Scripts.Creatures
                     CurrantSpeed = Rig.velocity.magnitude / Speed;
                     break;
             }
-        }
+        } //Use direction in localSpace!
+
         public override void Jump()
         {
             if (State != MoveState.OnGround)

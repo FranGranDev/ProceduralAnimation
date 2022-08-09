@@ -1,7 +1,9 @@
 ﻿using UnityEngine;
 
-public interface IMove
+public interface IMovement
 {
+    Transform Body { get; }
+
     public void Move(Vector3 direction, float rotation);
     public void Jump();
     public void OnActionStart();

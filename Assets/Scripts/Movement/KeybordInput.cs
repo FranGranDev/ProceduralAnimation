@@ -6,29 +6,34 @@ namespace Assets.Scripts.Movement
     {
         protected override void DoInput()
         {
-            float x = Input.GetAxis("Horizontal");
-            float y = Input.GetAxis("Vertical");
-            
-            Target.Move(new Vector3(0, 0, y), x);
-
-            if(Input.GetKeyDown(KeyCode.Space))
+            if (MovementTarget != null)
             {
-                Target.Jump();
-            }
+                float x = Input.GetAxis("Horizontal");
+                float y = Input.GetAxis("Vertical");
 
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            RaycastHit hit;
-            if (Physics.Raycast(ray, out hit, 100))
-            {
-                Target.ActionPoint(hit.point);
+                MovementTarget.Move(new Vector3(0, 0, y), x);
 
-                if (Input.GetMouseButtonDown(0))
+                if (Input.GetKeyDown(KeyCode.Space))
                 {
-                    Target.OnActionStart();
+                    MovementTarget.Jump();
                 }
-                if (Input.GetMouseButtonUp(0))
+            }
+            if (GadgetTarget != null)
+            {
+                Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+                RaycastHit hit;
+                if (Physics.Raycast(ray, out hit, 100))
                 {
-                    Target.OnActionEnd();
+                    GadgetTarget.ActionPoint(hit.point);
+
+                    if (Input.GetMouseButtonDown(0))
+                    {
+                        GadgetTarget.OnActionStart(null);
+                    }
+                    if (Input.GetMouseButtonUp(0))
+                    {
+                        GadgetTarget.OnActionEnd();
+                    }
                 }
             }
         }

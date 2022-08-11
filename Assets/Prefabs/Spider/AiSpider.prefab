@@ -370,8 +370,8 @@ LineRenderer:
       m_RotationOrder: 4
     colorGradient:
       serializedVersion: 2
-      key0: {r: 1, g: 0.45240098, b: 0, a: 0.78431374}
-      key1: {r: 1, g: 0.9686676, b: 0, a: 0.78431374}
+      key0: {r: 1, g: 0.45240098, b: 0, a: 0.19607843}
+      key1: {r: 1, g: 0.9686676, b: 0, a: 0.09803922}
       key2: {r: 0, g: 0, b: 0, a: 0}
       key3: {r: 0, g: 0, b: 0, a: 0}
       key4: {r: 0, g: 0, b: 0, a: 0}
@@ -2082,6 +2082,7 @@ GameObject:
   m_Component:
   - component: {fileID: 195085063551985483}
   - component: {fileID: 195085063551985485}
+  - component: {fileID: 7189175602770285729}
   - component: {fileID: 195085063551985482}
   - component: {fileID: 195085063551985484}
   - component: {fileID: 195085063551985481}
@@ -2120,11 +2121,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0eba3cacd74865c44b31b5bc5427512b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  state: 0
+  colorChanger: {fileID: 7189175602770285729}
+--- !u!114 &7189175602770285729
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 195085063551985480}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 166fd9a70579d9d47ac7910c6f6a727e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
   renderers:
   - {fileID: 195085063608807650}
-  baseColor: {r: 1, g: 0.6392157, b: 0, a: 1}
-  selectedColor: {r: 1, g: 0.12710369, b: 0, a: 1}
-  rotation: 0
+  - {fileID: 195085063918852326}
+  - {fileID: 195085063854898734}
+  - {fileID: 195085063264909195}
+  - {fileID: 195085062777744734}
+  baseColor: {r: 1, g: 0.56640255, b: 0, a: 1}
+  selectedColor: {r: 1, g: 0.097899675, b: 0.097899675, a: 1}
 --- !u!114 &195085063551985482
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2137,17 +2155,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f7e12834faf4e4499bf7dcb41ac2317, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  maxHp: 0
+  hp: 0
+  dead: 0
   Speed: 6
   RotationSpeed: 180
   AirRotationSpeed: 90
   JumpVelocity: 10
   MinHeight: 1
   BodyUpSpeed: 0.25
-  ShowState: 0
-  Weapon: {fileID: 195085061979627690}
-  Base: {fileID: 195085063608807653}
-  Rig: {fileID: 195085063551985481}
-  LegsAnim: {fileID: 195085063551985484}
+  weapon: {fileID: 195085061979627699}
+  body: {fileID: 195085063608807653}
+  rig: {fileID: 195085063551985481}
+  legsAnim: {fileID: 195085063551985484}
 --- !u!114 &195085063551985484
 MonoBehaviour:
   m_ObjectHideFlags: 0

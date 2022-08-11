@@ -1,12 +1,15 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Assets.Scripts.Gadgets;
 
 namespace Assets.Scripts.Creatures
 {
-    public class Spider : Creature
+    public class Spider : Creature, IGadget
     {
+        [SerializeField] private int maxHp;
+        [SerializeField] private int hp;
+        [SerializeField] private bool dead;
+
         [Range(0, 15f)] [SerializeField] private float Speed;
         [Range(0, 360f)] [SerializeField] private float RotationSpeed;
         [Range(0, 270f)] [SerializeField] private float AirRotationSpeed;
@@ -15,18 +18,41 @@ namespace Assets.Scripts.Creatures
         [Range(0, 3f)] [SerializeField] private float MinHeight;
         [Range(0, 1f)] [SerializeField] private float BodyUpSpeed;
 
-        public MoveState ShowState;
+        [Header("Components")]
+        [SerializeField] private GameObject weapon;
+        [SerializeField] private IGadget gadget;
+        [SerializeField] private Transform body;
+        [SerializeField] private Rigidbody rig;
+        [SerializeField] private ProceduralAnimation legsAnim;
 
         public float CurrantBodyUpSpeed { get; private set; }
         public Vector3 Direction { get; private set; }
         public float CurrantSpeed { get; private set; }
-        public override Transform Body => Base;
+        public override Transform Body => body;
 
-        [Header("Components")]
-        [SerializeField] private Gadget Weapon;
-        [SerializeField] private Transform Base;
-        [SerializeField] private Rigidbody Rig;
-        [SerializeField] private ProceduralAnimation LegsAnim;
+
+        public override int Hp
+        {
+            get => hp;
+            protected set
+            {
+                hp = value;
+                if(hp < 0)
+                {
+                    Die();
+                }
+            }
+        }
+        public override bool Dead => dead;
+        public override int MaxHp => maxHp;
+        public override void Die()
+        {
+            dead = true;
+            hp = 0;
+
+            OnDie?.Invoke();
+        }
+        public override System.Action OnDie { get; set; }
 
         public override void Move(Vector3 direction, float rotation)
         {
@@ -35,36 +61,35 @@ namespace Assets.Scripts.Creatures
             switch(State)
             {
                 case MoveState.OnGround:
-                    Base.Rotate(Vector3.up, rotation * RotationSpeed * Time.fixedDeltaTime);
-                    Rig.velocity = Vector3.Lerp(Rig.velocity, Base.TransformDirection(direction) * Speed, 0.25f);
-                    CurrantSpeed = Rig.velocity.magnitude / Speed;
+                    body.Rotate(Vector3.up, rotation * RotationSpeed * Time.fixedDeltaTime);
+                    rig.velocity = Vector3.Lerp(rig.velocity, body.TransformDirection(direction) * Speed, 0.25f);
+                    CurrantSpeed = rig.velocity.magnitude / Speed;
                     break;
                 case MoveState.Fly:
-                    Base.Rotate(Vector3.up, rotation * AirRotationSpeed * Time.fixedDeltaTime);
-                    transform.Rotate(Base.right, direction.z * AirRotationSpeed * Time.fixedDeltaTime);
-                    CurrantSpeed = Rig.velocity.magnitude / Speed;
+                    body.Rotate(Vector3.up, rotation * AirRotationSpeed * Time.fixedDeltaTime);
+                    transform.Rotate(body.right, direction.z * AirRotationSpeed * Time.fixedDeltaTime);
+                    CurrantSpeed = rig.velocity.magnitude / Speed;
                     break;
                 case MoveState.Jumping:
-                    Base.Rotate(Vector3.up, rotation * AirRotationSpeed * Time.fixedDeltaTime);
-                    transform.Rotate(Base.right, direction.z * AirRotationSpeed * Time.fixedDeltaTime);
-                    CurrantSpeed = Rig.velocity.magnitude / Speed;
+                    body.Rotate(Vector3.up, rotation * AirRotationSpeed * Time.fixedDeltaTime);
+                    transform.Rotate(body.right, direction.z * AirRotationSpeed * Time.fixedDeltaTime);
+                    CurrantSpeed = rig.velocity.magnitude / Speed;
                     break;
             }
         } //Use direction in localSpace!
-
         public override void Jump()
         {
             if (State != MoveState.OnGround)
                 return;
             State = MoveState.Fly;
-            Rig.AddForce(transform.up * JumpVelocity, ForceMode.VelocityChange);
+            rig.AddForce(transform.up * JumpVelocity, ForceMode.VelocityChange);
             SetState(MoveState.Jumping);
             StartCoroutine(JumpDelayCour());
         }
         private IEnumerator JumpDelayCour()
         {
             yield return new WaitForSeconds(0.5f);
-            while(LegsAnim.LegsOnGround < LegsAnim.Legs.Length / 2)
+            while(legsAnim.LegsOnGround < legsAnim.Legs.Length / 2)
             {
                 if (State == MoveState.Fly)
                     yield break;
@@ -74,57 +99,58 @@ namespace Assets.Scripts.Creatures
             SetState(MoveState.OnGround);
             yield break;
         }
-        public override void ActionPoint(Vector3 point)
+
+
+        public void ActionPoint(Vector3 point)
         {
-            if (Weapon == null)
+            if (gadget == null)
                 return;
-            Weapon.ActionPoint(point);
+            gadget.ActionPoint(point);
         }
-        public override void OnActionStart()
+        public void OnActionStart(System.Action callback)
         {
-            if (Weapon == null)
+            if (gadget == null)
                 return;
-            System.Action callback = null;
-            switch(Weapon.CallbackAction)
-            {
-                case Gadget.CreatureActionType.Jump:
-                    callback = Jump;
-                    break;
-            }
-            Weapon.OnActionStart(callback);
+            callback = null;
+            //switch(Weapon.CallbackAction)
+            //{
+            //    case Gadget.CreatureActionType.Jump:
+            //        callback = Jump;
+            //        break;
+            //}
+            gadget.OnActionStart(callback);
         }
-        public override void OnActionEnd()
+        public void OnActionEnd()
         {
-            if (Weapon == null)
+            if (gadget == null)
                 return;
-            Weapon.OnActionEnd();
+            gadget.OnActionEnd();
         }
-        public override void ChangeGadget(bool right)
+        public void ChangeGadget(bool right)
         {
             
         }
 
+
         public override void StateSelect()
         {
-            ShowState = State;
-
             switch (State)
             {
                 case MoveState.Fly:
-                    if (LegsAnim.LegsOnGround >= LegsAnim.Legs.Length - 1)
+                    if (legsAnim.LegsOnGround >= legsAnim.Legs.Length - 1)
                     {
                         SetState(MoveState.OnGround);
                     }
                     break;
                 case MoveState.OnGround:
-                    if (LegsAnim.LegsOnGround < LegsAnim.Legs.Length - 1)
+                    if (legsAnim.LegsOnGround < legsAnim.Legs.Length - 1)
                     {
                         SetState(MoveState.Fly);
                     }
                     break;
                 case MoveState.Jumping:
                     {
-                        if (LegsAnim.LegsOnGround == 0)
+                        if (legsAnim.LegsOnGround == 0)
                         {
                             SetState(MoveState.Fly);
                         }
@@ -134,7 +160,7 @@ namespace Assets.Scripts.Creatures
         }
         public override void StateExecute()
         {
-            LegsAnim.Simulate(Direction);
+            legsAnim.Simulate(Direction);
 
             switch (State)
             {
@@ -151,7 +177,7 @@ namespace Assets.Scripts.Creatures
 
         public override void Init()
         {
-
+            gadget = weapon.GetComponent<IGadget>();
         }
 
         private void SetState(MoveState state)
@@ -162,13 +188,13 @@ namespace Assets.Scripts.Creatures
             switch (State)
             {
                 case MoveState.Fly:
-                    Rig.useGravity = true;
+                    rig.useGravity = true;
                     break;
                 case MoveState.OnGround:
-                    Rig.useGravity = false;
+                    rig.useGravity = false;
                     break;
                 case MoveState.Jumping:
-                    Rig.useGravity = true;
+                    rig.useGravity = true;
                     break;
             }
         }
@@ -179,11 +205,11 @@ namespace Assets.Scripts.Creatures
             {
                 if (hit.distance > MinHeight * 1.1f)
                 {
-                    Rig.AddForce(-transform.up * CurrantBodyUpSpeed, ForceMode.VelocityChange);
+                    rig.AddForce(-transform.up * CurrantBodyUpSpeed, ForceMode.VelocityChange);
                 }
                 else if (hit.distance < MinHeight * 0.9f)
                 {
-                    Rig.AddForce(transform.up * CurrantBodyUpSpeed, ForceMode.VelocityChange);
+                    rig.AddForce(transform.up * CurrantBodyUpSpeed, ForceMode.VelocityChange);
                 }
             }
             CurrantBodyUpSpeed = Mathf.Lerp(CurrantBodyUpSpeed, BodyUpSpeed, 0.05f);
@@ -194,13 +220,12 @@ namespace Assets.Scripts.Creatures
         }
         private void SetBodyNormalRotation()
         {
-            transform.up = Vector3.Lerp(transform.up, LegsAnim.LegsNormal, 0.5f);
+            transform.up = Vector3.Lerp(transform.up, legsAnim.LegsNormal, 0.5f);
         }
         private void SetBodyFlyRotation()
         {
-            Vector3 direction = Vector3.up - Rig.velocity.normalized;
+            Vector3 direction = Vector3.up - rig.velocity.normalized;
             transform.up = Vector3.Lerp(transform.up, direction, 0.05f);
         }
-
     }
 }

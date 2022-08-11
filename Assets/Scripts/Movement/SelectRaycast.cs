@@ -7,7 +7,7 @@ namespace Assets.Scripts.Movement
 {
     public class SelectRaycast
     {
-        public static bool TryGetUnit(ref ISelectable unit, Vector2 screenPoint)
+        public static bool TryGet<T>(ref T unit, Vector2 screenPoint)
         {
             RaycastHit hit;
             Ray ray = Camera.main.ScreenPointToRay(screenPoint);

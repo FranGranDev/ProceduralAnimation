@@ -2,8 +2,8 @@
     "name": "Movement",
     "rootNamespace": "Assets.Scripts.Movement",
     "references": [
-        "GUID:44bd70a8ba973ec488b5f6db1182069b",
-        "GUID:4eee37c3b4548ca4e804ef920e2a384f"
+        "GUID:4eee37c3b4548ca4e804ef920e2a384f",
+        "GUID:eba63d64efc824b4a9bc61fcc80c6aed"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

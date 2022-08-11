@@ -30,17 +30,18 @@ namespace Assets.Scripts.Movement
         private void OnClick(Vector2 position, ITouchMovement.MouseButtons button)
         {
             ISelectable unit = null;
-            if (SelectRaycast.TryGetUnit(ref unit, position))
+            if (SelectRaycast.TryGet(ref unit, position))
             {
-                Debug.Log("da");
-
                 if (button == ITouchMovement.MouseButtons.Right)
                 {
-                    //Unit Attack
+                    foreach(ISelectable selected in selectedUnits)
+                    {
+                        selected.OnSendAccept();
+                    }
+                    unit.Accept(selectedUnits);
                 }
                 else
                 {
-                    Debug.Log("da");
                     SelectSingleUnit(unit);
                 }
             }
@@ -89,6 +90,14 @@ namespace Assets.Scripts.Movement
             drawer.UpdateBox(first, second);
         }
 
+
+        private void Attack(IEntity entity)
+        {
+            foreach(ISelectable unit in selectedUnits)
+            {
+                unit.Attack(entity);
+            }
+        }
 
         private void SelectUnits(List<ISelectable> units)
         {

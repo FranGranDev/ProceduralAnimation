@@ -1,10 +1,7 @@
 {
-    "name": "Ai",
-    "rootNamespace": "Assets.Scripts.Ai",
-    "references": [
-        "GUID:eba63d64efc824b4a9bc61fcc80c6aed",
-        "GUID:945ddb773bc2a144dbf0caacaba9ba4b"
-    ],
+    "name": "Abstract",
+    "rootNamespace": "Abstract",
+    "references": [],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,

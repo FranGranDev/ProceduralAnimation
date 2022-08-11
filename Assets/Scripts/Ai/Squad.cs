@@ -7,9 +7,29 @@ namespace Assets.Scripts.Ai
     public class Squad : MonoBehaviour, ISelectable
     {
         [SerializeField] private List<GameObject> startUnits;
+        [SerializeField] private Transform flag;
+
         private List<ISelectable> units = new List<ISelectable>();
 
-        [SerializeField] private Transform flag;
+        public bool Selected
+        {
+            get
+            {
+                return selected;
+            }
+            set
+            {
+                selected = value;
+                flag.gameObject.SetActive(selected);
+                foreach (ISelectable unit in units)
+                {
+                    unit.Selected = value;
+                }
+            }
+        }
+        private bool selected;
+
+        public System.Action OnDisable { get; set; }
 
         private Vector3 Center
         {
@@ -28,6 +48,8 @@ namespace Assets.Scripts.Ai
         }
         private Vector3 lastCenter;
 
+        private List<IEntity> enemys = new List<IEntity>();
+
         private void Start()
         {
             lastCenter = transform.position;
@@ -41,46 +63,70 @@ namespace Assets.Scripts.Ai
             }
         }
 
-        public bool Selected
+        public void OnSendAccept()
         {
-            get
+            enemys.Clear();
+            foreach(ISelectable unit in units)
             {
-                return selected;
+                unit.OnSendAccept();
             }
-            set
+        }
+        public void Accept(ISelectable other)
+        {
+            enemys.Clear();
+
+            foreach (ISelectable unit in units)
             {
-                selected = value;
-                flag.gameObject.SetActive(selected);
-                foreach(ISelectable unit in units)
+                unit.Accept(other);
+            }
+        }
+        public void Accept(List<ISelectable> others)
+        {
+            enemys.Clear();
+
+            foreach (ISelectable other in others)
+            {                
+                foreach (ISelectable unit in units)
                 {
-                    unit.Selected = value;
+                    unit.Accept(other);
                 }
             }
         }
-        private bool selected;
+
 
         public void MoveTo(Vector3 position)
         {
-            int coln = Mathf.CeilToInt(Mathf.Sqrt(units.Count));
-            int row = Mathf.RoundToInt(units.Count / coln);
+            enemys.Clear();
 
-            int unitIndex = 0;
-
-            Debug.Log("Count: " + units.Count + " Coln: " + coln + " Row: " + row);
-
-            for(int y = -coln / 2; y < coln / 2 || unitIndex < units.Count; y++)
+            foreach (ISelectable unit in units)
             {
-                for (int x = -row / 2; x < row / 2; x++)
-                {
-                    if (unitIndex >= units.Count)
-                        break;
-                    Vector3 offset = new Vector3(x, y, 0);
+                unit.MoveTo(position);
+            }
+        }
+        public void Attack(IEntity entity)
+        {
+            if(!enemys.Contains(entity))
+            {
+                enemys.Add(entity);
+            }
 
-                    units[unitIndex].MoveTo(position + offset);
-                    unitIndex++;
+            foreach (ISelectable unit in units)
+            {
+                unit.Attack(enemys);
+                enemys.Shuffle();
+            }
+        }
+        public void Attack(List<IEntity> entity)
+        {
+            foreach (IEntity enemy in entity)
+            {
+                foreach (ISelectable unit in units)
+                {
+                    unit.Attack(entity);
                 }
             }
         }
+
         public void Add(List<ISelectable> units)
         {
             units.AddRange(units);
@@ -89,6 +135,7 @@ namespace Assets.Scripts.Ai
         {
             units.Clear();
         }
+
 
         private void FixedUpdate()
         {

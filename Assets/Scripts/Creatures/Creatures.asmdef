@@ -3,7 +3,7 @@
     "rootNamespace": "Assets.Scripts.Creatures",
     "references": [
         "GUID:bb50516465f17574782dffd898a79429",
-        "GUID:61d1aea1ecc6715439f442b4454f979f"
+        "GUID:eba63d64efc824b4a9bc61fcc80c6aed"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

@@ -1,7 +1,10 @@
 {
     "name": "Gadgets",
     "rootNamespace": "Assets.Scripts.Gadgets",
-    "references": [],
+    "references": [
+        "GUID:44bd70a8ba973ec488b5f6db1182069b",
+        "GUID:eba63d64efc824b4a9bc61fcc80c6aed"
+    ],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,

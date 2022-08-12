@@ -18,18 +18,18 @@ namespace Assets.Scripts.Ai
             }
             set
             {
-                if (actionsExecute != null)
+                if (stateExecute != null)
                 {
                     switch (state)
                     {
                         case States.Attack:
-                            actionsExecute -= Attacking;
+                            stateExecute -= Attacking;
                             break;
                         case States.Idle:
-                            actionsExecute -= Staying;
+                            stateExecute -= Staying;
                             break;
                         case States.Move:
-                            actionsExecute -= Moving;
+                            stateExecute -= Moving;
                             break;
                     }
                 }
@@ -37,23 +37,18 @@ namespace Assets.Scripts.Ai
                 switch (state)
                 {
                     case States.Attack:
-                        actionsExecute += Attacking;
+                        stateExecute += Attacking;
                         break;
                     case States.Idle:
-                        actionsExecute += Staying;
+                        stateExecute += Staying;
                         break;
                     case States.Move:
-                        actionsExecute += Moving;
+                        stateExecute += Moving;
                         break;
                 }
             }
         }
-
         [SerializeField] protected States state;
-       
-        private UnitAction actionsExecute;
-
-        //--------------------
 
         public void SetState(States state)
         {
@@ -68,6 +63,8 @@ namespace Assets.Scripts.Ai
 
         }
 
+
+        private UnitAction stateExecute;
         //----------------------
 
         public abstract void Moving();
@@ -76,7 +73,7 @@ namespace Assets.Scripts.Ai
 
         private void FixedUpdate()
         {
-            actionsExecute?.Invoke();
+            stateExecute?.Invoke();
         }
     }
 }

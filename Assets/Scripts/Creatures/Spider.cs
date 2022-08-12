@@ -37,7 +37,7 @@ namespace Assets.Scripts.Creatures
             protected set
             {
                 hp = value;
-                if(hp < 0)
+                if(hp <= 0)
                 {
                     Die();
                 }
@@ -45,12 +45,27 @@ namespace Assets.Scripts.Creatures
         }
         public override bool Dead => dead;
         public override int MaxHp => maxHp;
+
+        public override void GetHit(Hit hit)
+        {
+            Hp -= hit.Damage;
+        }
+        public override void GetHit(ImpulseHit hit)
+        {
+            Hp -= hit.Damage;
+
+            rig.AddForce(hit.Impulse, ForceMode.Impulse);
+            rig.AddTorque(hit.Impulse, ForceMode.Impulse);
+        }
+
         public override void Die()
         {
             dead = true;
             hp = 0;
 
             OnDie?.Invoke();
+
+            Destroy(gameObject);
         }
         public override System.Action OnDie { get; set; }
 
@@ -120,11 +135,11 @@ namespace Assets.Scripts.Creatures
             //}
             gadget.OnActionStart(callback);
         }
-        public void OnActionEnd()
+        public void OnActionEnd(IEntity self)
         {
             if (gadget == null)
                 return;
-            gadget.OnActionEnd();
+            gadget.OnActionEnd(this);
         }
         public void ChangeGadget(bool right)
         {

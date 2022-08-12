@@ -24,8 +24,15 @@ namespace Assets.Scripts.Ai
         {
             if(!firing)
             {
+                if(entity.Equals(null))
+                {
+                    onChangeState(Unit.States.Idle);
+                    return;
+                }
                 monoBehaviour.StartCoroutine(FireCour(entity.Body.position));
             }
+
+            movement.Move(Vector3.zero, 0);
         }
         private IEnumerator FireCour(Vector3 point)
         {

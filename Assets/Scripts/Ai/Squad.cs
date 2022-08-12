@@ -58,7 +58,7 @@ namespace Assets.Scripts.Ai
                 ISelectable unit = null;
                 if(unitObj.TryGetComponent(out unit))
                 {
-                    units.Add(unit);
+                    Add(unit);
                 }
             }
         }
@@ -127,9 +127,10 @@ namespace Assets.Scripts.Ai
             }
         }
 
-        public void Add(List<ISelectable> units)
+        public void Add(ISelectable unit)
         {
-            units.AddRange(units);
+            unit.OnDisable += () => { units.Remove(unit); };
+            units.Add(unit);
         }
         public void Clear()
         {

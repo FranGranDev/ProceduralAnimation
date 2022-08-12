@@ -45,10 +45,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 315766635922425573}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c525e5e3be6bf504690bc4e5c80c6755, type: 3}
+  m_Script: {fileID: 11500000, guid: 67de037493edd804799fac215bece283, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Rig: {fileID: 315766635922425562}
+  boomRadius: 10
+  impulsePower: 50
 --- !u!33 &315766635922425561
 MeshFilter:
   m_ObjectHideFlags: 0

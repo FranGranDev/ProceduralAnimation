@@ -23,9 +23,9 @@ namespace Assets.Scripts.Gadgets
         private bool Reloaded = true;
         private bool Reloading;
 
-        public override void OnActionEnd()
+        public override void OnActionEnd(IEntity ignore)
         {
-            Fire();
+            Fire(ignore);
             ActionStarted = false;
 
 
@@ -37,7 +37,6 @@ namespace Assets.Scripts.Gadgets
         public override void OnActionStart(System.Action callback)
         {
             ActionStarted = true;
-
         }
         public override void ActionPoint(Vector3 point)
         {
@@ -52,12 +51,12 @@ namespace Assets.Scripts.Gadgets
             }
         }
 
-        private void Fire()
+        private void Fire(IEntity ignore)
         {
             if (Reloaded)
             {
                 Vector3 upDirection = transform.up * Vector3.Dot(transform.up, Vector3.up);
-                BulletData data = new BulletData(gameObject, FlyCurve, FlyHeight, CurrantPoint, transform.position, upDirection, BulletSpeed);
+                BulletData data = new BulletData(FlyCurve, FlyHeight, CurrantPoint, transform.position, upDirection, BulletSpeed, ignore);
                 Instantiate(bullet, FirePoint.position, FirePoint.rotation, null).Fire(data);
 
                 StartCoroutine(ReloadCour());

@@ -35,7 +35,7 @@ namespace Assets.Scripts.Gadgets
         {
             CurrantPoint = point;
         }
-        public override void OnActionEnd()
+        public override void OnActionEnd(IEntity self)
         {
             ActionStarted = false;
 

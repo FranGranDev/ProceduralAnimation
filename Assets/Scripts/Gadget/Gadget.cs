@@ -12,7 +12,7 @@ namespace Assets.Scripts.Gadgets
 
         public abstract void ActionPoint(Vector3 point);
         public abstract void OnActionStart(System.Action callback);
-        public abstract void OnActionEnd();
+        public abstract void OnActionEnd(IEntity self = null);
         public void ChangeGadget(bool right)
         {
 

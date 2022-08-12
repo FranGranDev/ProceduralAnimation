@@ -97,9 +97,8 @@ namespace Assets.Scripts.Ai
             if(enemys.Count > 0)
             {
                 currantEnemy = enemys.Pop();
+                currantEnemy.OnDie += AttackNext;
             }
-
-            currantEnemy.OnDie += AttackNext;
         }
         public void Attack(IEntity enemy)
         {
@@ -113,9 +112,13 @@ namespace Assets.Scripts.Ai
             {
                 currantEnemy.OnDie -= AttackNext;
             }
-            currantEnemy = enemy;
+            if (enemys.Count > 0)
+            {
+                currantEnemy = enemys.Pop();
+                currantEnemy.OnDie += AttackNext;
+            }
 
-            currantEnemy.OnDie += AttackNext;
+            
         }
         private void AttackNext()
         {
@@ -126,6 +129,10 @@ namespace Assets.Scripts.Ai
             if(State == States.Attack && enemys.Count > 0)
             {
                 Attack(enemys.Pop());
+            }
+            else
+            {
+                SetState(States.Idle);
             }
         }
 
@@ -176,7 +183,7 @@ namespace Assets.Scripts.Ai
         #endregion
 
         #region Squad
-        public void Add(List<ISelectable> units)
+        public void Add(ISelectable unit)
         {
             Debug.Log("Cant add to unit");
         }

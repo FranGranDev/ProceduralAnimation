@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -17,7 +16,7 @@ public interface ISelectable
     void Attack(IEntity entity);
     void Attack(List<IEntity> entitis);
 
-    void Add(List<ISelectable> units);
+    void Add(ISelectable unit);
     void Clear();
 
     System.Action OnDisable { get; set; }

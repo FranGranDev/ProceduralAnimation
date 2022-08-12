@@ -17,4 +17,15 @@ public static class Extentions
             list[n] = value;
         }
     }
+    public static T GetRandom<T>(this IList<T> list)
+    {
+        try
+        {
+            return list[Random.Range(0, list.Count)];
+        }
+        catch
+        {
+            return default;
+        }
+    }
 }

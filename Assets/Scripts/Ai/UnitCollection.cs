@@ -14,6 +14,10 @@ namespace Assets.Scripts.Ai
         private void Start()
         {
             allUnits = new List<ISelectable>(FindObjectsOfType<MonoBehaviour>().OfType<ISelectable>());
+            foreach(ISelectable unit in allUnits)
+            {
+                unit.OnDisable += () => { allUnits.Remove(unit); };
+            }
             Count = allUnits.Count;
         }
     }

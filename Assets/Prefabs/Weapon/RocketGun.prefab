@@ -82,8 +82,8 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  FlyHeight: 5
-  BulletSpeed: 10
+  FlyHeight: 25
+  BulletSpeed: 20
   ReloadTime: 1
   Visualize: 1
   FirePoint: {fileID: 7561163032254109706}

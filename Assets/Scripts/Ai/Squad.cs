@@ -10,6 +10,7 @@ namespace Assets.Scripts.Ai
         [SerializeField] private Transform flag;
 
         private List<ISelectable> units = new List<ISelectable>();
+        private ISelectable captain;
 
         public bool Selected
         {
@@ -20,7 +21,14 @@ namespace Assets.Scripts.Ai
             set
             {
                 selected = value;
-                flag.gameObject.SetActive(selected);
+                if(selected)
+                {
+                    flag.localScale = flagStartScale * 1.25f;
+                }
+                else
+                {
+                    flag.localScale = flagStartScale;
+                }
                 foreach (ISelectable unit in units)
                 {
                     unit.Selected = value;
@@ -35,18 +43,15 @@ namespace Assets.Scripts.Ai
         {
             get
             {
-                if (units.Count == 0)
-                    return lastCenter;
-                Vector3 center = Vector3.zero;
-                foreach(ISelectable unit in units)
+                if (!captain.Equals(null))
                 {
-                    center += unit.transform.position;
+                    lastCenter = captain.transform.position;
                 }
-                lastCenter = center / units.Count;
                 return lastCenter;
             }
         }
         private Vector3 lastCenter;
+        private Vector3 flagStartScale;
 
         private List<IEntity> enemys = new List<IEntity>();
 
@@ -61,6 +66,8 @@ namespace Assets.Scripts.Ai
                     Add(unit);
                 }
             }
+
+            flagStartScale = flag.localScale;
         }
 
         public void OnSendAccept()
@@ -129,18 +136,32 @@ namespace Assets.Scripts.Ai
 
         public void Add(ISelectable unit)
         {
-            unit.OnDisable += () => { units.Remove(unit); };
+            unit.OnDisable += () => 
+            {
+                if(unit.Equals(captain))
+                {
+                    captain = units.GetRandom();
+                }
+                units.Remove(unit);
+            };
             units.Add(unit);
+
+            if(captain == null)
+            {
+                captain = unit;
+            }
         }
         public void Clear()
         {
+            flag.gameObject.SetActive(false);
+            captain = null;
             units.Clear();
         }
 
 
         private void FixedUpdate()
         {
-            transform.position = Vector3.Lerp(transform.position, Center, 0.1f);
+            transform.position = Center;
         }
     }
 }

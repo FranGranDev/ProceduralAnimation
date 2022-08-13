@@ -135,6 +135,8 @@ namespace Assets.Scripts.Movement
         {
             foreach(ISelectable unit in selectedUnits)
             {
+                if (unit.Equals(null))
+                    continue;
                 unit.Selected = false;
             }
             selectedUnits.Clear();

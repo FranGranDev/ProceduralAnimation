@@ -2354,6 +2354,7 @@ GameObject:
   - component: {fileID: 8197013307696830529}
   - component: {fileID: 8197013307696830527}
   - component: {fileID: 8197013307696830520}
+  - component: {fileID: 3039232315066550333}
   m_Layer: 6
   m_Name: Body
   m_TagString: Player
@@ -2500,6 +2501,18 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.75, y: 0.75, z: 0.75}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &3039232315066550333
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8197013307696830521}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: deaccec2320dfc343845fb4d844f878c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8197013307743230781
 GameObject:
   m_ObjectHideFlags: 0
@@ -2729,17 +2742,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f7e12834faf4e4499bf7dcb41ac2317, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  maxHp: 10
+  hp: 10
+  dead: 0
   Speed: 6
   RotationSpeed: 90
   AirRotationSpeed: 60
   JumpVelocity: 10
   MinHeight: 1
   BodyUpSpeed: 0.25
-  ShowState: 0
-  Weapon: {fileID: 8197013306131236623}
-  Base: {fileID: 8197013307696830524}
-  Rig: {fileID: 8197013307807780752}
-  LegsAnim: {fileID: 8197013307807780757}
+  weapon: {fileID: 8197013306131236616}
+  body: {fileID: 8197013307696830524}
+  rig: {fileID: 8197013307807780752}
+  legsAnim: {fileID: 8197013307807780757}
 --- !u!114 &8197013307807780757
 MonoBehaviour:
   m_ObjectHideFlags: 0

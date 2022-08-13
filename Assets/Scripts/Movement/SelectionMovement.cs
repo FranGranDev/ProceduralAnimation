@@ -107,14 +107,29 @@ namespace Assets.Scripts.Movement
             {
                 unit.Selected = true;
             }
-            selectedUnits = units;
+
+            AddUnits(units);
         }
         private void SelectSingleUnit(ISelectable unit)
         {
             UnselectAll();
 
-            selectedUnits.Add(unit);
+            AddUnit(unit);
+
             unit.Selected = true;
+        }
+
+        private void AddUnits(List<ISelectable> units)
+        {
+            selectedUnits.AddRange(units);
+
+            RemoveNullUnits();
+        }
+        private void AddUnit(ISelectable unit)
+        {
+            selectedUnits.Add(unit);
+
+            RemoveNullUnits();
         }
         private void UnselectAll()
         {
@@ -123,6 +138,16 @@ namespace Assets.Scripts.Movement
                 unit.Selected = false;
             }
             selectedUnits.Clear();
+        }
+        private void RemoveNullUnits()
+        {
+            foreach(ISelectable unit in selectedUnits)
+            {
+                if(unit.Equals(null))
+                {
+                    selectedUnits.Remove(unit);
+                }
+            }
         }
 
         private void UnitsMove(Vector2 position)

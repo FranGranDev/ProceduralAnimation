@@ -1,7 +1,7 @@
 # Procedural Animation
--Made by Unity
+- Made by Unity
+- Inverse kinematic
+- Movement on any plane
+- Grappling gun
+- RTS Unit Selection
 
-Interesting stuff: </br>
--Procedural animation via inverse kinematic</br>
--Movement on any plane</br>
--Grappling gun</br>
